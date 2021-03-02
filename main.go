@@ -2,6 +2,7 @@ package main
 
 import (
 	appConfig "fiberGOv1/config"
+	database "fiberGOv1/config"
 	routes "fiberGOv1/routes"
 	"log"
 	"os"
@@ -38,11 +39,13 @@ func main() {
 		TimeFormat: "02-Jan-2006 15:04:05",
 		TimeZone:   "Asia/Jakarta",
 	}))
-	// for Fiber that lets caches be more efficient and save bandwidth,
+	// for Fiber to lets caches be more efficient and save bandwidth,
 	// as a web server does not need to resend a full response if the content has not changed.
 	app.Use(etag.New())
+	// Initiate DB connection
+	database.InitDatabase()
 	// setup routes list
-	routes.RoutesList(app)
+	routes.RoutesAppList(app)
 	// setup not found 404 response
 	appConfig.NotFoundConfig(app)
 	// start listen app

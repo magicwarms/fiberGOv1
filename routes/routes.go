@@ -1,8 +1,7 @@
 package routes
 
 import (
-	book "fiberGOv1/controllers/book"
-	person "fiberGOv1/controllers/person"
+	controller "fiberGOv1/controllers"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
@@ -18,7 +17,7 @@ func helloWorld(c *fiber.Ctx) error {
 }
 
 // RoutesList is all routes in app
-func RoutesList(app *fiber.App) {
+func RoutesAppList(app *fiber.App) {
 	v1 := app.Group("/api/v1")
 	v1.Get("/hello/:name?", helloWorld)
 	v1.Get("/stack", func(c *fiber.Ctx) error {
@@ -26,14 +25,14 @@ func RoutesList(app *fiber.App) {
 	})
 
 	books := v1.Group("/book")
-	books.Get("/list", book.GetBooks)
-	books.Get("/get", book.GetBook)
-	books.Get("/create", book.NewBook)
-	books.Get("/delete", book.DeleteBook)
+	books.Get("/list", controller.GetBooks)
+	books.Get("/get", controller.GetBook)
+	books.Get("/create", controller.NewBook)
+	books.Get("/delete", controller.DeleteBook)
 
 	persons := v1.Group("/person")
-	persons.Get("/list", person.GetPersons)
-	persons.Get("/get", person.GetPerson)
-	persons.Get("/create", person.NewPerson)
-	persons.Get("/delete", person.DeletePerson)
+	persons.Get("/list", controller.GetPersons)
+	persons.Get("/get", controller.GetPerson)
+	persons.Get("/create", controller.NewPerson)
+	persons.Get("/delete", controller.DeletePerson)
 }
