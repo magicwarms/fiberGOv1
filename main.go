@@ -2,7 +2,6 @@ package main
 
 import (
 	appConfig "fiberGOv1/config"
-	database "fiberGOv1/config"
 	routes "fiberGOv1/routes"
 	"log"
 	"os"
@@ -13,6 +12,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/etag"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 )
 
 func main() {
@@ -43,7 +43,9 @@ func main() {
 	// as a web server does not need to resend a full response if the content has not changed.
 	app.Use(etag.New())
 	// Initiate DB connection
-	database.InitDatabase()
+	appConfig.InitDatabase()
+	// To recover from a panic thrown by any handler in the stack
+	app.Use(recover.New())
 	// setup routes list
 	routes.RoutesAppList(app)
 	// setup not found 404 response
