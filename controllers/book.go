@@ -1,12 +1,20 @@
 package controllers
 
 import (
+	config "fiberGOv1/config"
+	service "fiberGOv1/services"
+
 	"github.com/gofiber/fiber/v2"
 )
 
-// GetBooks is to get all books data
-func GetBooks(c *fiber.Ctx) error {
-	return c.SendString("All Books")
+// GetAllBooks is to get all books data
+func GetAllBooks(c *fiber.Ctx) error {
+	getAllBooks := service.GetAllBooks()
+	return c.JSON(config.AppResponse{
+		Code:   200,
+		Status: "OK",
+		Data:   getAllBooks,
+	})
 }
 
 // GetBook is to get one book data

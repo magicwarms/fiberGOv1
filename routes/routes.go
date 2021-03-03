@@ -25,7 +25,7 @@ func RoutesAppList(app *fiber.App) {
 	})
 
 	books := v1.Group("/book")
-	books.Get("/list", controller.GetBooks)
+	books.Get("/list", controller.GetAllBooks)
 	books.Get("/get", controller.GetBook)
 	books.Get("/create", controller.NewBook)
 	books.Get("/delete", controller.DeleteBook)

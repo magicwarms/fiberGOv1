@@ -6,6 +6,8 @@ import (
 	"os"
 	"time"
 
+	entity "fiberGOv1/entities"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -32,11 +34,12 @@ func InitDatabase() {
 			Colorful:      true,        // Enable color
 		},
 	)
-	_, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+	dbConnection, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: dbLogger,
 	})
 	if err != nil {
 		panic("failed to connect database")
 	}
+	dbConnection.AutoMigrate(entity.Book{})
 	fmt.Println("Connection Opened to Database")
 }

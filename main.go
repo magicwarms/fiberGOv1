@@ -16,7 +16,10 @@ import (
 )
 
 func main() {
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		// Enables the Server HTTP header with the given value.
+		ServerHeader: "FiberGOV1",
+	})
 	// will compress the response using gzip, deflate and brotli compression depending on the Accept-Encoding header.
 	app.Use(compress.New())
 	// to enable Cross-Origin Resource Sharing with various options.
@@ -51,5 +54,5 @@ func main() {
 	// setup not found 404 response
 	appConfig.NotFoundConfig(app)
 	// start listen app
-	log.Fatal(app.Listen(":9000"))
+	log.Fatal(app.Listen(":" + appConfig.GoDotEnvVariable("APP_PORT")))
 }

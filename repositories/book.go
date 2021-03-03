@@ -1,12 +1,15 @@
 package repositories
 
 import (
-	database "fiberGOv1/config/database"
-	model "fiberGOv1/models"
+	config "fiberGOv1/config"
+	entity "fiberGOv1/entities"
 )
 
-func getAllBooks() {
-	db := database.DBConn
-	var books []model.Book
-	db
+var db = config.DBConn
+
+// GetAllBooks is to get all books data
+func GetAllBooks() entity.Book {
+	var books entity.Book
+	db.Find(&books)
+	return books
 }
