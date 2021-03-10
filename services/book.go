@@ -1,11 +1,15 @@
 package services
 
 import (
-	entity "fiberGOv1/entities"
-	repository "fiberGOv1/repositories"
+	model "github.com/magicwarms/fiberGOv1/models"
+	repository "github.com/magicwarms/fiberGOv1/repositories"
 )
 
 // GetAllBooks is to get all books data
-func GetAllBooks() entity.Book {
-	return repository.GetAllBooks()
+func GetAllBooks() []model.Books {
+	getAllBooks := repository.GetAllBooks()
+	// if err != nil {
+	// 	panic("error nih")
+	// }
+	return getAllBooks
 }

@@ -1,8 +1,10 @@
 package controllers
 
 import (
-	config "fiberGOv1/config"
-	service "fiberGOv1/services"
+	"net/http"
+
+	config "github.com/magicwarms/fiberGOv1/config"
+	service "github.com/magicwarms/fiberGOv1/services"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -11,7 +13,7 @@ import (
 func GetAllBooks(c *fiber.Ctx) error {
 	getAllBooks := service.GetAllBooks()
 	return c.JSON(config.AppResponse{
-		Code:   200,
+		Code:   http.StatusOK,
 		Status: "OK",
 		Data:   getAllBooks,
 	})

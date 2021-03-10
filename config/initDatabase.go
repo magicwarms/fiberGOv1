@@ -6,20 +6,17 @@ import (
 	"os"
 	"time"
 
-	entity "fiberGOv1/entities"
-
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+
+	database "github.com/magicwarms/fiberGOv1/database"
+	model "github.com/magicwarms/fiberGOv1/models"
 )
 
-// initial db connection
-var (
-	DBConn *gorm.DB
-)
-
-// InitDatabase is initial Setup DB Connection
+// InitDatabase is initial Setup for DB Connection
 func InitDatabase() {
+	// var err error
 	dsn := "host=" + GoDotEnvVariable("DB_HOST") + " user=" + GoDotEnvVariable("DB_USERNAME") + " password=" + GoDotEnvVariable("DB_PASSWORD") + " dbname=" + GoDotEnvVariable("DB_DATABASE") + " port=" + GoDotEnvVariable("DB_PORT") + " sslmode=disable TimeZone=" + GoDotEnvVariable("TZ")
 	appEnv := GoDotEnvVariable("APP_ENV")
 	logLvl := logger.Info
@@ -34,12 +31,13 @@ func InitDatabase() {
 			Colorful:      true,        // Enable color
 		},
 	)
-	dbConnection, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+	dbConnect := database.DBConn
+	dbConnect, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: dbLogger,
 	})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	dbConnection.AutoMigrate(entity.Book{})
+	dbConnect.AutoMigrate(model.Books{})
 	fmt.Println("Connection Opened to Database")
 }

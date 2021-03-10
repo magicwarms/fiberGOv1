@@ -1,10 +1,11 @@
 package main
 
 import (
-	appConfig "fiberGOv1/config"
-	routes "fiberGOv1/routes"
 	"log"
 	"os"
+
+	config "github.com/magicwarms/fiberGOv1/config"
+	routes "github.com/magicwarms/fiberGOv1/routes"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cache"
@@ -45,14 +46,14 @@ func main() {
 	// for Fiber to lets caches be more efficient and save bandwidth,
 	// as a web server does not need to resend a full response if the content has not changed.
 	app.Use(etag.New())
-	// Initiate DB connection
-	appConfig.InitDatabase()
+	//start DB connection
+	config.InitDatabase()
 	// To recover from a panic thrown by any handler in the stack
 	app.Use(recover.New())
 	// setup routes list
-	routes.RoutesAppList(app)
+	routes.AppRoutes(app)
 	// setup not found 404 response
-	appConfig.NotFoundConfig(app)
+	config.NotFoundConfig(app)
 	// start listen app
-	log.Fatal(app.Listen(":" + appConfig.GoDotEnvVariable("APP_PORT")))
+	log.Fatal(app.Listen(":" + config.GoDotEnvVariable("APP_PORT")))
 }

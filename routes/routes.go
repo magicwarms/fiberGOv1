@@ -1,8 +1,9 @@
 package routes
 
 import (
-	controller "fiberGOv1/controllers"
 	"strings"
+
+	controller "github.com/magicwarms/fiberGOv1/controllers"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -16,8 +17,8 @@ func helloWorld(c *fiber.Ctx) error {
 	return c.SendString("Hi " + strings.ToTitle(paramLala))
 }
 
-// RoutesList is all routes in app
-func RoutesAppList(app *fiber.App) {
+// AppRoutes is all routes in app
+func AppRoutes(app *fiber.App) {
 	v1 := app.Group("/api/v1")
 	v1.Get("/hello/:name?", helloWorld)
 	v1.Get("/stack", func(c *fiber.Ctx) error {
