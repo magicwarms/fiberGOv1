@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	config "github.com/magicwarms/fiberGOv1/config"
-	routes "github.com/magicwarms/fiberGOv1/routes"
+	"github.com/magicwarms/fiberGOv1/config"
+	"github.com/magicwarms/fiberGOv1/routes"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cache"
@@ -43,13 +43,13 @@ func main() {
 		TimeFormat: "02-Jan-2006 15:04:05",
 		TimeZone:   "Asia/Jakarta",
 	}))
+	// To recover from a panic thrown by any handler in the stack
+	app.Use(recover.New())
 	// for Fiber to lets caches be more efficient and save bandwidth,
 	// as a web server does not need to resend a full response if the content has not changed.
 	app.Use(etag.New())
 	//start DB connection
 	config.InitDatabase()
-	// To recover from a panic thrown by any handler in the stack
-	app.Use(recover.New())
 	// setup routes list
 	routes.AppRoutes(app)
 	// setup not found 404 response

@@ -3,15 +3,15 @@ package controllers
 import (
 	"net/http"
 
-	config "github.com/magicwarms/fiberGOv1/config"
-	service "github.com/magicwarms/fiberGOv1/services"
+	"github.com/magicwarms/fiberGOv1/config"
+	"github.com/magicwarms/fiberGOv1/services"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 // GetAllBooks is to get all books data
 func GetAllBooks(c *fiber.Ctx) error {
-	getAllBooks := service.GetAllBooks()
+	getAllBooks := services.GetAllBooks()
 	return c.JSON(config.AppResponse{
 		Code:   http.StatusOK,
 		Status: "OK",

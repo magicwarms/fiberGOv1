@@ -8,8 +8,5 @@ import (
 // GetAllBooks is to get all books data
 func GetAllBooks() []model.Books {
 	getAllBooks := repository.GetAllBooks()
-	// if err != nil {
-	// 	panic("error nih")
-	// }
 	return getAllBooks
 }
