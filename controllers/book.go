@@ -2,11 +2,12 @@ package controllers
 
 import (
 	"net/http"
-
-	"github.com/magicwarms/fiberGOv1/config"
-	"github.com/magicwarms/fiberGOv1/services"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/magicwarms/fiberGOv1/config"
+	"github.com/magicwarms/fiberGOv1/models"
+	"github.com/magicwarms/fiberGOv1/services"
 )
 
 // GetAllBooks is to get all books data
@@ -21,12 +22,39 @@ func GetAllBooks(c *fiber.Ctx) error {
 
 // GetBook is to get one book data
 func GetBook(c *fiber.Ctx) error {
-	return c.SendString("Single Book")
+	bookId, _ := strconv.Atoi(c.Query("id"))
+	getBook := services.GetBook(bookId)
+	if (getBook == models.Books{}) {
+		return c.JSON(config.AppResponse{
+			Code:   http.StatusOK,
+			Status: "OK",
+			Data:   nil,
+		})
+	}
+	return c.JSON(config.AppResponse{
+		Code:   http.StatusOK,
+		Status: "OK",
+		Data:   getBook,
+	})
 }
 
-// NewBook is create new book data
-func NewBook(c *fiber.Ctx) error {
-	return c.SendString("New Book")
+// CreateBook is create new book data
+func CreateBook(c *fiber.Ctx) error {
+	book := new(models.Books)
+	if err := c.BodyParser(book); err != nil {
+		return c.JSON(config.AppResponse{
+			Code:   http.StatusUnprocessableEntity,
+			Status: "UNPROCESSABLE-ENTITY",
+			Data:   nil,
+		})
+	}
+	createBook := services.CreateBook(book)
+	return c.JSON(config.AppResponse{
+		Code:   http.StatusOK,
+		Status: "OK",
+		Data:   createBook,
+	})
+
 }
 
 // DeleteBook is to delete book data

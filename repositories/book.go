@@ -17,3 +17,23 @@ func GetAllBooks() []models.Books {
 	}
 	return books
 }
+
+// CreateBook is to create book data based on input body
+func CreateBook(book *models.Books) *models.Books {
+	err := config.DB.Create(&book).Error
+	if err != nil {
+		panic(err)
+	}
+	return book
+}
+
+// GetBook is to get only one book data
+func GetBook(bookId int) models.Books {
+	var book models.Books
+	err := config.DB.First(&book, bookId).Error
+	if err != nil {
+		fmt.Println(err)
+		return book
+	}
+	return book
+}

@@ -1,12 +1,24 @@
 package services
 
 import (
-	model "github.com/magicwarms/fiberGOv1/models"
-	repository "github.com/magicwarms/fiberGOv1/repositories"
+	"github.com/magicwarms/fiberGOv1/models"
+	"github.com/magicwarms/fiberGOv1/repositories"
 )
 
 // GetAllBooks is to get all books data
-func GetAllBooks() []model.Books {
-	getAllBooks := repository.GetAllBooks()
+func GetAllBooks() []models.Books {
+	getAllBooks := repositories.GetAllBooks()
 	return getAllBooks
+}
+
+// CreateBook is to get all books data
+func CreateBook(book *models.Books) *models.Books {
+	createBook := repositories.CreateBook(book)
+	return createBook
+}
+
+// GetBook is to get only one book data
+func GetBook(bookId int) models.Books {
+	getBook := repositories.GetBook(bookId)
+	return getBook
 }

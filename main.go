@@ -8,7 +8,6 @@ import (
 	"github.com/magicwarms/fiberGOv1/routes"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/etag"
@@ -29,8 +28,6 @@ func main() {
 		AllowHeaders: "Origin, Content-Type, Accept",
 		AllowMethods: "GET,POST,PUT,DELETE",
 	}))
-	// to intercept responses and cache them
-	app.Use(cache.New())
 	// Logger middleware for Fiber that logs HTTP request/response details.
 	file, err := os.OpenFile("./logs/app-logging.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
