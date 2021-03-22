@@ -19,6 +19,18 @@ func main() {
 	app := fiber.New(fiber.Config{
 		// Enables the Server HTTP header with the given value.
 		ServerHeader: "FiberGOV1",
+		// Override default error handler
+		ErrorHandler: func(c *fiber.Ctx, err error) error {
+			if err != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(config.AppResponse{
+					Code:    fiber.StatusInternalServerError,
+					Message: "Internal Server Error - " + err.Error(),
+					Data:    nil,
+				})
+			}
+			// Return from handler
+			return nil
+		},
 	})
 	// will compress the response using gzip, deflate and brotli compression depending on the Accept-Encoding header.
 	app.Use(compress.New())

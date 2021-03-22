@@ -30,6 +30,7 @@ func AppRoutes(app *fiber.App) {
 	books.Get("/get", controller.GetBook)
 	books.Post("/create", controller.CreateBook)
 	books.Delete("/delete", controller.DeleteBook)
+	books.Put("/update", controller.UpdateBook)
 
 	persons := v1.Group("/person")
 	persons.Get("/list", controller.GetPersons)

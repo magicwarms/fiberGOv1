@@ -14,9 +14,9 @@ import (
 func GetAllBooks(c *fiber.Ctx) error {
 	getAllBooks := services.GetAllBooks()
 	return c.JSON(config.AppResponse{
-		Code:   http.StatusOK,
-		Status: "OK",
-		Data:   getAllBooks,
+		Code:    http.StatusOK,
+		Message: "OK",
+		Data:    getAllBooks,
 	})
 }
 
@@ -24,17 +24,17 @@ func GetAllBooks(c *fiber.Ctx) error {
 func GetBook(c *fiber.Ctx) error {
 	bookId, _ := strconv.Atoi(c.Query("id"))
 	getBook := services.GetBook(bookId)
-	if (getBook == models.Books{}) {
+	if getBook.Title == "" {
 		return c.JSON(config.AppResponse{
-			Code:   http.StatusOK,
-			Status: "OK",
-			Data:   nil,
+			Code:    http.StatusOK,
+			Message: "No Book data found with ID",
+			Data:    nil,
 		})
 	}
 	return c.JSON(config.AppResponse{
-		Code:   http.StatusOK,
-		Status: "OK",
-		Data:   getBook,
+		Code:    http.StatusOK,
+		Message: "OK",
+		Data:    getBook,
 	})
 }
 
@@ -43,21 +43,41 @@ func CreateBook(c *fiber.Ctx) error {
 	book := new(models.Books)
 	if err := c.BodyParser(book); err != nil {
 		return c.JSON(config.AppResponse{
-			Code:   http.StatusUnprocessableEntity,
-			Status: "UNPROCESSABLE-ENTITY",
-			Data:   nil,
+			Code:    http.StatusUnprocessableEntity,
+			Message: "UNPROCESSABLE-ENTITY",
+			Data:    nil,
 		})
 	}
 	createBook := services.CreateBook(book)
 	return c.JSON(config.AppResponse{
-		Code:   http.StatusOK,
-		Status: "OK",
-		Data:   createBook,
+		Code:    http.StatusOK,
+		Message: "OK",
+		Data:    createBook,
 	})
 
 }
 
 // DeleteBook is to delete book data
 func DeleteBook(c *fiber.Ctx) error {
-	return c.SendString("Delete Book")
+	// return c.SendString("Delete Book")
+	bookId, _ := strconv.Atoi(c.Query("id"))
+	getBook := services.GetBook(bookId)
+	if getBook.Title == "" {
+		return c.JSON(config.AppResponse{
+			Code:    http.StatusOK,
+			Message: "No Book data found with ID",
+			Data:    nil,
+		})
+	}
+	services.DeleteBook(bookId)
+	return c.JSON(config.AppResponse{
+		Code:    http.StatusOK,
+		Message: "OK",
+		Data:    nil,
+	})
+}
+
+// UpdateBook is to update book data
+func UpdateBook(c *fiber.Ctx) error {
+	return c.SendString("Update Book")
 }

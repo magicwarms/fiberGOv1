@@ -22,3 +22,9 @@ func GetBook(bookId int) models.Books {
 	getBook := repositories.GetBook(bookId)
 	return getBook
 }
+
+// DeleteBook is to delete one book data
+func DeleteBook(bookId int) models.Books {
+	deleteBook := repositories.DeleteBook(bookId)
+	return deleteBook
+}
