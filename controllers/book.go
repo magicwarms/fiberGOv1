@@ -7,12 +7,12 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/magicwarms/fiberGOv1/config"
 	"github.com/magicwarms/fiberGOv1/models"
-	"github.com/magicwarms/fiberGOv1/services"
+	"github.com/magicwarms/fiberGOv1/repositories"
 )
 
 // GetAllBooks is to get all books data
 func GetAllBooks(c *fiber.Ctx) error {
-	getAllBooks := services.GetAllBooks()
+	getAllBooks := repositories.GetAllBooks()
 	return c.JSON(config.AppResponse{
 		Code:    http.StatusOK,
 		Message: "OK",
@@ -23,11 +23,11 @@ func GetAllBooks(c *fiber.Ctx) error {
 // GetBook is to get one book data
 func GetBook(c *fiber.Ctx) error {
 	bookId, _ := strconv.Atoi(c.Query("id"))
-	getBook := services.GetBook(bookId)
+	getBook := repositories.GetBook(bookId)
 	if getBook.Title == "" {
 		return c.JSON(config.AppResponse{
 			Code:    http.StatusOK,
-			Message: "No Book data found with ID",
+			Message: "NO-DATA-FOUND",
 			Data:    nil,
 		})
 	}
@@ -44,11 +44,11 @@ func CreateBook(c *fiber.Ctx) error {
 	if err := c.BodyParser(book); err != nil {
 		return c.JSON(config.AppResponse{
 			Code:    http.StatusUnprocessableEntity,
-			Message: "UNPROCESSABLE-ENTITY",
+			Message: "INVALID-PARAMS",
 			Data:    nil,
 		})
 	}
-	createBook := services.CreateBook(book)
+	createBook := repositories.CreateBook(book)
 	return c.JSON(config.AppResponse{
 		Code:    http.StatusOK,
 		Message: "OK",
@@ -59,17 +59,16 @@ func CreateBook(c *fiber.Ctx) error {
 
 // DeleteBook is to delete book data
 func DeleteBook(c *fiber.Ctx) error {
-	// return c.SendString("Delete Book")
 	bookId, _ := strconv.Atoi(c.Query("id"))
-	getBook := services.GetBook(bookId)
+	getBook := repositories.GetBook(bookId)
 	if getBook.Title == "" {
 		return c.JSON(config.AppResponse{
 			Code:    http.StatusOK,
-			Message: "No Book data found with ID",
+			Message: "NO-DATA-FOUND",
 			Data:    nil,
 		})
 	}
-	services.DeleteBook(bookId)
+	repositories.DeleteBook(bookId)
 	return c.JSON(config.AppResponse{
 		Code:    http.StatusOK,
 		Message: "OK",
