@@ -13,6 +13,13 @@ import (
 // GetAllBooks is to get all books data
 func GetAllBooks(c *fiber.Ctx) error {
 	getAllBooks := repositories.GetAllBooks()
+	if len(getAllBooks) < 0 {
+		return c.JSON(config.AppResponse{
+			Code:    http.StatusOK,
+			Message: "NOT-FOUND",
+			Data:    nil,
+		})
+	}
 	return c.JSON(config.AppResponse{
 		Code:    http.StatusOK,
 		Message: "OK",
@@ -27,7 +34,7 @@ func GetBook(c *fiber.Ctx) error {
 	if getBook.Title == "" {
 		return c.JSON(config.AppResponse{
 			Code:    http.StatusOK,
-			Message: "NO-DATA-FOUND",
+			Message: "NO-FOUND",
 			Data:    nil,
 		})
 	}
@@ -64,7 +71,7 @@ func DeleteBook(c *fiber.Ctx) error {
 	if getBook.Title == "" {
 		return c.JSON(config.AppResponse{
 			Code:    http.StatusOK,
-			Message: "NO-DATA-FOUND",
+			Message: "NO-FOUND",
 			Data:    nil,
 		})
 	}

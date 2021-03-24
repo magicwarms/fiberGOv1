@@ -10,9 +10,9 @@ import (
 // GetAllBooks is to get all books data
 func GetAllBooks() []models.Books {
 	var books []models.Books
-	err := config.DB.Find(&books).Error
-	if err != nil {
-		fmt.Println(err)
+	result := config.DB.Unscoped().Find(&books)
+	if result.Error != nil {
+		fmt.Println(result.Error)
 		return books
 	}
 	return books
