@@ -54,7 +54,7 @@ func main() {
 	}))
 	// To recover from a panic thrown by any handler in the stack
 	app.Use(recover.New())
-	// for Fiber to lets caches be more efficient and save bandwidth,
+	// for Fiber to let's caches be more efficient and save bandwidth,
 	// as a web server does not need to resend a full response if the content has not changed.
 	app.Use(etag.New())
 	//start DB connection
