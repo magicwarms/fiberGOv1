@@ -8,11 +8,10 @@ import (
 
 // Books model
 type Books struct {
-	gorm.Model
-	ID        uint           `json:"id"`
-	Title     string         `json:"title"`
+	ID        string         `gorm:"default:uuid_generate_v4();primaryKey" json:"id"`
+	Title     string         `gorm:"index" json:"title"`
 	Author    string         `json:"author"`
-	Rating    int            `json:"rating"`
+	Rating    float64        `json:"rating"`
 	CreatedAt time.Time      `json:"createdAt"`
 	UpdatedAt time.Time      `json:"updatedAt"`
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"deletedAt"`

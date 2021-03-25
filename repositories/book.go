@@ -10,7 +10,7 @@ import (
 // GetAllBooks is to get all books data
 func GetAllBooks() []models.Books {
 	var books []models.Books
-	result := config.DB.Unscoped().Find(&books)
+	result := config.DB.Find(&books)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return books
