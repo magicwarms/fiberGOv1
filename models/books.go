@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"time"
 
 	"gorm.io/gorm"
@@ -15,4 +16,9 @@ type Books struct {
 	CreatedAt time.Time      `json:"createdAt"`
 	UpdatedAt time.Time      `json:"updatedAt"`
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"deletedAt"`
+}
+
+func (book *Books) BeforeUpdate(tx *gorm.DB) (err error) {
+	fmt.Println("Updated data", book.Title)
+	return
 }

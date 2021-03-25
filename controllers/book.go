@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/magicwarms/fiberGOv1/config"
@@ -29,7 +28,7 @@ func GetAllBooks(c *fiber.Ctx) error {
 
 // GetBook is to get one book data
 func GetBook(c *fiber.Ctx) error {
-	bookId, _ := strconv.Atoi(c.Query("id"))
+	bookId := c.Query("id")
 	getBook := repositories.GetBook(bookId)
 	if getBook.Title == "" {
 		return c.JSON(config.AppResponse{
@@ -66,7 +65,7 @@ func CreateBook(c *fiber.Ctx) error {
 
 // DeleteBook is to delete book data
 func DeleteBook(c *fiber.Ctx) error {
-	bookId, _ := strconv.Atoi(c.Query("id"))
+	bookId := c.Query("id")
 	getBook := repositories.GetBook(bookId)
 	if getBook.Title == "" {
 		return c.JSON(config.AppResponse{
@@ -85,5 +84,26 @@ func DeleteBook(c *fiber.Ctx) error {
 
 // UpdateBook is to update book data
 func UpdateBook(c *fiber.Ctx) error {
-	return c.SendString("Update Book")
+	book := new(models.Books)
+	if err := c.BodyParser(book); err != nil {
+		return c.JSON(config.AppResponse{
+			Code:    http.StatusUnprocessableEntity,
+			Message: "INVALID-PARAMS",
+			Data:    nil,
+		})
+	}
+	getBook := repositories.GetBook(book.ID)
+	if getBook.Title == "" {
+		return c.JSON(config.AppResponse{
+			Code:    http.StatusOK,
+			Message: "NO-FOUND",
+			Data:    nil,
+		})
+	}
+	updateBook := repositories.UpdateBook(book)
+	return c.JSON(config.AppResponse{
+		Code:    http.StatusOK,
+		Message: "OK",
+		Data:    updateBook,
+	})
 }

@@ -10,9 +10,9 @@ import (
 // GetAllBooks is to get all books data
 func GetAllBooks() []models.Books {
 	var books []models.Books
-	result := config.DB.Find(&books)
-	if result.Error != nil {
-		fmt.Println(result.Error)
+	results := config.DB.Find(&books)
+	if results.Error != nil {
+		fmt.Println(results.Error)
 		return books
 	}
 	return books
@@ -20,30 +20,38 @@ func GetAllBooks() []models.Books {
 
 // CreateBook is to create book data based on input body
 func CreateBook(book *models.Books) *models.Books {
-	err := config.DB.Create(&book).Error
-	if err != nil {
-		panic(err)
+	result := config.DB.Create(&book)
+	if result.Error != nil {
+		panic(result.Error)
 	}
 	return book
 }
 
 // GetBook is to get only one book data
-func GetBook(bookId int) models.Books {
+func GetBook(bookId string) models.Books {
 	var book models.Books
-	err := config.DB.First(&book, bookId).Error
-	if err != nil {
-		fmt.Println(err)
+	result := config.DB.First(&book, "id = ?", bookId)
+	if result.Error != nil {
+		fmt.Println(result.Error)
 		return book
 	}
 	return book
 }
 
 // DeleteBook is to delete one book data
-func DeleteBook(bookId int) models.Books {
+func DeleteBook(bookId string) models.Books {
 	var book models.Books
-	err := config.DB.Delete(&book, bookId).Error
-	if err != nil {
-		panic(err)
+	result := config.DB.Delete(&book, "id = ?", bookId)
+	if result.Error != nil {
+		panic(result.Error)
+	}
+	return book
+}
+
+func UpdateBook(book *models.Books) *models.Books {
+	result := config.DB.Model(&book).Select("title", "author", "rating").Updates(map[string]interface{}{"title": book.Title, "author": book.Author, "rating": book.Rating})
+	if result.Error != nil {
+		panic(result.Error)
 	}
 	return book
 }
