@@ -68,6 +68,8 @@ func GetAllAuthors(c *fiber.Ctx) error {
 // GetAuthor is to get one Author data
 func GetAuthor(c *fiber.Ctx) error {
 	authorId := c.Query("id")
+	var authorData authorLocal
+	var bookData []bookLocal
 	getAuthor := repositories.GetAuthor(authorId)
 	if getAuthor.Fullname == "" {
 		return c.JSON(config.AppResponse{
@@ -76,10 +78,26 @@ func GetAuthor(c *fiber.Ctx) error {
 			Data:    nil,
 		})
 	}
+	for _, book := range getAuthor.Books {
+		bookData = append(bookData, bookLocal{
+			ID:        book.ID,
+			Title:     book.Title,
+			Rating:    book.Rating,
+			CreatedAt: book.CreatedAt,
+			UpdatedAt: book.UpdatedAt,
+		})
+	}
+	authorData = authorLocal{
+		ID:        getAuthor.ID,
+		Fullname:  getAuthor.Fullname,
+		CreatedAt: getAuthor.CreatedAt,
+		UpdatedAt: getAuthor.UpdatedAt,
+		Books:     bookData,
+	}
 	return c.JSON(config.AppResponse{
 		Code:    http.StatusOK,
 		Message: "OK",
-		Data:    getAuthor,
+		Data:    authorData,
 	})
 }
 

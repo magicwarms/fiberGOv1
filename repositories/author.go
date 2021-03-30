@@ -30,7 +30,7 @@ func CreateAuthor(author *models.Authors) *models.Authors {
 // GetAuthor is to get only one author data
 func GetAuthor(authorId string) models.Authors {
 	var author models.Authors
-	result := config.DB.First(&author, "id = ?", authorId)
+	result := config.DB.Preload("Books").First(&author, "id = ?", authorId)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return author
