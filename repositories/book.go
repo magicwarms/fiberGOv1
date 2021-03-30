@@ -30,7 +30,7 @@ func CreateBook(book *models.Books) *models.Books {
 // GetBook is to get only one book data
 func GetBook(bookId string) models.Books {
 	var book models.Books
-	result := config.DB.First(&book, "id = ?", bookId)
+	result := config.DB.Preload("Authors").First(&book, "id = ?", bookId)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return book

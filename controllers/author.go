@@ -11,19 +11,19 @@ import (
 )
 
 type authorLocal struct {
-	ID        string
-	Fullname  string
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	Books     []bookLocal
+	ID        string      `json:"id"`
+	Fullname  string      `json:"fullname"`
+	CreatedAt time.Time   `json:"createdAt"`
+	UpdatedAt time.Time   `json:"updatedAt"`
+	Books     []bookLocal `json:"books"`
 }
 
 type bookLocal struct {
-	ID        string
-	Title     string
-	Rating    float64
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID        string    `json:"id"`
+	Title     string    `json:"title"`
+	Rating    float64   `json:"rating"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 // GetAuthors is to get all Authors data
@@ -39,14 +39,16 @@ func GetAllAuthors(c *fiber.Ctx) error {
 	}
 	for _, item := range getAllAuthors {
 		var booksData []bookLocal
-		for _, book := range item.Books {
-			booksData = append(booksData, bookLocal{
-				ID:        book.ID,
-				Title:     book.Title,
-				Rating:    book.Rating,
-				CreatedAt: book.CreatedAt,
-				UpdatedAt: book.UpdatedAt,
-			})
+		if len(item.Books) > 0 {
+			for _, book := range item.Books {
+				booksData = append(booksData, bookLocal{
+					ID:        book.ID,
+					Title:     book.Title,
+					Rating:    book.Rating,
+					CreatedAt: book.CreatedAt,
+					UpdatedAt: book.UpdatedAt,
+				})
+			}
 		}
 		getAllData = append(getAllData, authorLocal{
 			ID:        item.ID,
@@ -65,7 +67,20 @@ func GetAllAuthors(c *fiber.Ctx) error {
 
 // GetAuthor is to get one Author data
 func GetAuthor(c *fiber.Ctx) error {
-	return c.SendString("Single Author")
+	authorId := c.Query("id")
+	getAuthor := repositories.GetAuthor(authorId)
+	if getAuthor.Fullname == "" {
+		return c.JSON(config.AppResponse{
+			Code:    http.StatusOK,
+			Message: "NO-FOUND",
+			Data:    nil,
+		})
+	}
+	return c.JSON(config.AppResponse{
+		Code:    http.StatusOK,
+		Message: "OK",
+		Data:    getAuthor,
+	})
 }
 
 // CreateAuthor is create new Author data

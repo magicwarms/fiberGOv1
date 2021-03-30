@@ -37,12 +37,28 @@ func InitDatabase() {
 	)
 
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
-		Logger: dbLogger,
+		Logger:      dbLogger,
+		PrepareStmt: true,
+		NowFunc: func() time.Time {
+			return time.Now().Local()
+		},
 	})
 	if err != nil {
 		fmt.Println(err)
 		panic("failed to connect database")
 	}
+	sqlDB, errConnPool := DB.DB()
+	if errConnPool != nil {
+		fmt.Println(errConnPool.Error())
+		panic(errConnPool.Error())
+	}
+	// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+	sqlDB.SetMaxIdleConns(10)
+	// SetMaxOpenConns sets the maximum number of open connections to the database.
+	sqlDB.SetMaxOpenConns(100)
+	// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+	sqlDB.SetConnMaxLifetime(time.Hour)
+
 	DB.AutoMigrate(models.Books{})
 	DB.AutoMigrate(models.Authors{})
 	fmt.Println("Connection Opened to Database")
