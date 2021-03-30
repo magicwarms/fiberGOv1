@@ -10,7 +10,7 @@ import (
 // GetAllBooks is to get all books data
 func GetAllBooks() []models.Books {
 	var books []models.Books
-	results := config.DB.Find(&books)
+	results := config.DB.Preload("Authors").Find(&books)
 	if results.Error != nil {
 		fmt.Println(results.Error)
 		return books
@@ -49,7 +49,7 @@ func DeleteBook(bookId string) models.Books {
 }
 
 func UpdateBook(book *models.Books) *models.Books {
-	result := config.DB.Model(&book).Select("title", "author", "rating").Updates(map[string]interface{}{"title": book.Title, "author": book.Author, "rating": book.Rating})
+	result := config.DB.Model(&book).Select("title", "author", "rating").Updates(map[string]interface{}{"title": book.Title, "author": book.AuthorID, "rating": book.Rating})
 	if result.Error != nil {
 		panic(result.Error)
 	}

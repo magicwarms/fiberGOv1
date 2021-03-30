@@ -60,7 +60,6 @@ func CreateBook(c *fiber.Ctx) error {
 		Message: "OK",
 		Data:    createBook,
 	})
-
 }
 
 // DeleteBook is to delete book data

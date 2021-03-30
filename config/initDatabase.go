@@ -44,5 +44,6 @@ func InitDatabase() {
 		panic("failed to connect database")
 	}
 	DB.AutoMigrate(models.Books{})
+	DB.AutoMigrate(models.Authors{})
 	fmt.Println("Connection Opened to Database")
 }

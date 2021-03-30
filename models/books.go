@@ -11,11 +11,12 @@ import (
 type Books struct {
 	ID        string         `gorm:"default:uuid_generate_v4();primaryKey" json:"id"`
 	Title     string         `gorm:"index" json:"title"`
-	Author    string         `json:"author"`
+	AuthorID  string         `json:"authorId"`
 	Rating    float64        `json:"rating"`
 	CreatedAt time.Time      `json:"createdAt"`
 	UpdatedAt time.Time      `json:"updatedAt"`
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"deletedAt"`
+	Authors   Authors        `gorm:"foreignKey:AuthorID" json:"authors"`
 }
 
 //DEFINE HOOKS

@@ -32,9 +32,10 @@ func AppRoutes(app *fiber.App) {
 	books.Delete("/delete", controller.DeleteBook)
 	books.Put("/update", controller.UpdateBook)
 
-	persons := v1.Group("/person")
-	persons.Get("/list", controller.GetPersons)
-	persons.Get("/get", controller.GetPerson)
-	persons.Get("/create", controller.NewPerson)
-	persons.Get("/delete", controller.DeletePerson)
+	authors := v1.Group("/author")
+	authors.Get("/list", controller.GetAllAuthors)
+	authors.Get("/get", controller.GetAuthor)
+	authors.Post("/create", controller.CreateAuthor)
+	authors.Delete("/delete", controller.DeleteAuthor)
+	authors.Put("/update", controller.UpdateAuthor)
 }
