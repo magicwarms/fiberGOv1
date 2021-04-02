@@ -47,8 +47,9 @@ func DeleteBook(book *models.Books) *models.Books {
 	return book
 }
 
+// UpdateBook is to update one book data
 func UpdateBook(book *models.Books) *models.Books {
-	result := config.DB.Model(&book).Select("title", "author", "rating").Updates(map[string]interface{}{"title": book.Title, "author": book.AuthorID, "rating": book.Rating})
+	result := config.DB.Model(&book).Select("title", "author_id", "rating").Updates(map[string]interface{}{"title": book.Title, "author_id": book.AuthorID, "rating": book.Rating})
 	if result.Error != nil {
 		panic(result.Error)
 	}

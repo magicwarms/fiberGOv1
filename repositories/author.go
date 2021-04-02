@@ -46,3 +46,14 @@ func DeleteAuthor(author *models.Authors) *models.Authors {
 	}
 	return author
 }
+
+// UpdateAuthor is to update one author data
+func UpdateAuthor(author *models.Authors) *models.Authors {
+	result := config.DB.Model(&author).Select("fullname").Updates(map[string]interface{}{
+		"fullname": author.Fullname,
+	})
+	if result.Error != nil {
+		panic(result.Error)
+	}
+	return author
+}
