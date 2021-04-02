@@ -39,9 +39,8 @@ func GetBook(bookId string) models.Books {
 }
 
 // DeleteBook is to delete one book data
-func DeleteBook(bookId string) models.Books {
-	var book models.Books
-	result := config.DB.Delete(&book, "id = ?", bookId)
+func DeleteBook(book *models.Books) *models.Books {
+	result := config.DB.Delete(&book)
 	if result.Error != nil {
 		panic(result.Error)
 	}

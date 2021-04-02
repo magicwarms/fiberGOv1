@@ -121,7 +121,28 @@ func CreateAuthor(c *fiber.Ctx) error {
 
 // DeleteAuthor is to delete Author data
 func DeleteAuthor(c *fiber.Ctx) error {
-	return c.SendString("Delete Author")
+	author := new(models.Authors)
+	if err := c.BodyParser(author); err != nil {
+		return c.JSON(config.AppResponse{
+			Code:    http.StatusUnprocessableEntity,
+			Message: "INVALID-PARAMS",
+			Data:    nil,
+		})
+	}
+	getAuthor := repositories.GetAuthor(author.ID)
+	if getAuthor.Fullname == "" {
+		return c.JSON(config.AppResponse{
+			Code:    http.StatusOK,
+			Message: "NO-FOUND",
+			Data:    nil,
+		})
+	}
+	repositories.DeleteAuthor(author)
+	return c.JSON(config.AppResponse{
+		Code:    http.StatusOK,
+		Message: "OK",
+		Data:    nil,
+	})
 }
 
 // UpdateAuthor is to update Author data

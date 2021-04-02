@@ -37,3 +37,12 @@ func GetAuthor(authorId string) models.Authors {
 	}
 	return author
 }
+
+// DeleteAuthor is to delete one author data also delete associate book from the author
+func DeleteAuthor(author *models.Authors) *models.Authors {
+	result := config.DB.Select("Books").Delete(&author)
+	if result.Error != nil {
+		panic(result.Error)
+	}
+	return author
+}

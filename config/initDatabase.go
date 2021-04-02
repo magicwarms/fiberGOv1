@@ -59,7 +59,6 @@ func InitDatabase() {
 	// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
-	DB.AutoMigrate(models.Books{})
-	DB.AutoMigrate(models.Authors{})
+	DB.AutoMigrate(models.Books{}, models.Authors{})
 	fmt.Println("Connection Opened to Database")
 }

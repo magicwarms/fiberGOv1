@@ -64,8 +64,16 @@ func CreateBook(c *fiber.Ctx) error {
 
 // DeleteBook is to delete book data
 func DeleteBook(c *fiber.Ctx) error {
-	bookId := c.Query("id")
-	getBook := repositories.GetBook(bookId)
+	// bookId := c.Query("id")
+	book := new(models.Books)
+	if err := c.BodyParser(book); err != nil {
+		return c.JSON(config.AppResponse{
+			Code:    http.StatusUnprocessableEntity,
+			Message: "INVALID-PARAMS",
+			Data:    nil,
+		})
+	}
+	getBook := repositories.GetBook(book.ID)
 	if getBook.Title == "" {
 		return c.JSON(config.AppResponse{
 			Code:    http.StatusOK,
@@ -73,7 +81,7 @@ func DeleteBook(c *fiber.Ctx) error {
 			Data:    nil,
 		})
 	}
-	repositories.DeleteBook(bookId)
+	repositories.DeleteBook(book)
 	return c.JSON(config.AppResponse{
 		Code:    http.StatusOK,
 		Message: "OK",
