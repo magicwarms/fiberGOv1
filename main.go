@@ -59,6 +59,8 @@ func main() {
 	app.Use(etag.New())
 	//start DB connection
 	config.InitDatabase()
+	// Custom Timer middleware
+	app.Use(config.Timer())
 	// setup routes list
 	routes.AppRoutes(app)
 	// setup not found 404 response

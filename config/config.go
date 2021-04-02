@@ -1,8 +1,10 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
@@ -39,4 +41,20 @@ type AppResponse struct {
 	Code    int         `json:"code"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
+}
+
+// Timer will measure how long it takes before a response is returned
+func Timer() fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		// start timer
+		start := time.Now()
+		// next routes
+		err := c.Next()
+		// stop timer
+		stop := time.Now()
+		// Do something with response
+		c.Append("Server-Timing", fmt.Sprintf("response-duration=%v", stop.Sub(start).String()))
+		// return stack error if exist
+		return err
+	}
 }
