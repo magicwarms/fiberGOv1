@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -16,7 +17,18 @@ import (
 )
 
 func main() {
+	// Print current process
+	if fiber.IsChild() {
+		fmt.Printf("[%d] CHILD\n", os.Getppid())
+	} else {
+		fmt.Printf("[%d] MASTER\n", os.Getppid())
+	}
+	enablePrefork := false
+	if config.GoDotEnvVariable("APP_ENV") == "production" {
+		enablePrefork = true
+	}
 	app := fiber.New(fiber.Config{
+		Prefork: enablePrefork,
 		// Enables the Server HTTP header with the given value.
 		ServerHeader: "FiberGOV1",
 		// Override default error handler

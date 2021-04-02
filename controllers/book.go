@@ -64,7 +64,6 @@ func CreateBook(c *fiber.Ctx) error {
 
 // DeleteBook is to delete book data
 func DeleteBook(c *fiber.Ctx) error {
-	// bookId := c.Query("id")
 	book := new(models.Books)
 	if err := c.BodyParser(book); err != nil {
 		return c.JSON(config.AppResponse{

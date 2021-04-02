@@ -38,4 +38,13 @@ func AppRoutes(app *fiber.App) {
 	authors.Post("/create", controller.CreateAuthor)
 	authors.Delete("/delete", controller.DeleteAuthor)
 	authors.Put("/update", controller.UpdateAuthor)
+
+	users := v1.Group("/user")
+	users.Get("/list", controller.GetAllUsers)
+	users.Get("/get", controller.GetUser)
+	users.Post("/create", controller.CreateUser)
+	users.Delete("/delete", controller.DeleteUser)
+	users.Put("/update", controller.UpdateUser)
+
+	users.Post("/login", controller.LoginUser)
 }
