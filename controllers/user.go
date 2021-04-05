@@ -17,7 +17,7 @@ type loginInput struct {
 
 type loginResponse struct {
 	Token     string `json:"token"`
-	ExpiresAt int64  `json:"expiresAt"`
+	ExpiresAt string `json:"expiresAt"`
 }
 
 // GetAllUsers is to get all users data
@@ -44,7 +44,7 @@ func GetUser(c *fiber.Ctx) error {
 	if getUser.Email == "" {
 		return c.JSON(config.AppResponse{
 			Code:    http.StatusOK,
-			Message: "NO-FOUND",
+			Message: "NOT-FOUND",
 			Data:    nil,
 		})
 	}
@@ -88,7 +88,7 @@ func DeleteUser(c *fiber.Ctx) error {
 	if getUser.Email == "" {
 		return c.JSON(config.AppResponse{
 			Code:    http.StatusOK,
-			Message: "NO-FOUND",
+			Message: "NOT-FOUND",
 			Data:    nil,
 		})
 	}
@@ -114,7 +114,7 @@ func UpdateUser(c *fiber.Ctx) error {
 	if getUser.Email == "" {
 		return c.JSON(config.AppResponse{
 			Code:    http.StatusOK,
-			Message: "NO-FOUND",
+			Message: "NOT-FOUND",
 			Data:    nil,
 		})
 	}
@@ -158,7 +158,7 @@ func LoginUser(c *fiber.Ctx) error {
 		Message: "OK",
 		Data: loginResponse{
 			Token:     token,
-			ExpiresAt: 72,
+			ExpiresAt: "3 Days",
 		},
 	})
 }

@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -14,6 +15,13 @@ type JwtClaim struct {
 	ID    string `json:"id"`
 	Email string `json:"email"`
 	jwt.StandardClaims
+}
+
+// JwtWrapper wraps the signing key and the issuer
+type JwtWrapper struct {
+	SecretKey string
+	Issuer    string
+	ExpiresAt int64
 }
 
 func HashPassword(password string) string {
@@ -35,11 +43,10 @@ func GenerateToken(id, email string) (signedToken string) {
 		ID:    id,
 		Email: email,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Local().Add(time.Hour * time.Duration(72)).Unix(),
-			Issuer:    "LoginService",
+			ExpiresAt: time.Now().Local().Add(time.Hour * time.Duration(72)).Unix(), // expires at 3 days
+			Issuer:    "AuthService",
 		},
 	}
-
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, claims)
 	signedToken, err := token.SignedString([]byte(config.GoDotEnvVariable("SECRET_KEY")))
 	if err != nil {
@@ -48,4 +55,30 @@ func GenerateToken(id, email string) (signedToken string) {
 	}
 
 	return signedToken
+}
+
+//ValidateToken validates the jwt token
+func (j *JwtWrapper) ValidateToken(signedToken string) (claims *JwtClaim, err error) {
+	token, err := jwt.ParseWithClaims(
+		signedToken,
+		&JwtClaim{},
+		func(token *jwt.Token) (interface{}, error) {
+			return []byte(j.SecretKey), nil
+		},
+	)
+	if err != nil {
+		return
+	}
+	claims, ok := token.Claims.(*JwtClaim)
+	if !ok {
+		err = errors.New("ERROR-PARSE-TOKEN")
+		return
+	}
+
+	if claims.ExpiresAt < time.Now().Local().Unix() {
+		err = errors.New("JWT-EXPIRED")
+		return
+	}
+
+	return
 }

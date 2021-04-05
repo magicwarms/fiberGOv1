@@ -33,7 +33,7 @@ func GetBook(c *fiber.Ctx) error {
 	if getBook.Title == "" {
 		return c.JSON(config.AppResponse{
 			Code:    http.StatusOK,
-			Message: "NO-FOUND",
+			Message: "NOT-FOUND",
 			Data:    nil,
 		})
 	}
@@ -76,7 +76,7 @@ func DeleteBook(c *fiber.Ctx) error {
 	if getBook.Title == "" {
 		return c.JSON(config.AppResponse{
 			Code:    http.StatusOK,
-			Message: "NO-FOUND",
+			Message: "NOT-FOUND",
 			Data:    nil,
 		})
 	}
@@ -102,7 +102,7 @@ func UpdateBook(c *fiber.Ctx) error {
 	if getBook.Title == "" {
 		return c.JSON(config.AppResponse{
 			Code:    http.StatusOK,
-			Message: "NO-FOUND",
+			Message: "NOT-FOUND",
 			Data:    nil,
 		})
 	}

@@ -74,7 +74,7 @@ func GetAuthor(c *fiber.Ctx) error {
 	if getAuthor.Fullname == "" {
 		return c.JSON(config.AppResponse{
 			Code:    http.StatusOK,
-			Message: "NO-FOUND",
+			Message: "NOT-FOUND",
 			Data:    nil,
 		})
 	}
@@ -133,7 +133,7 @@ func DeleteAuthor(c *fiber.Ctx) error {
 	if getAuthor.Fullname == "" {
 		return c.JSON(config.AppResponse{
 			Code:    http.StatusOK,
-			Message: "NO-FOUND",
+			Message: "NOT-FOUND",
 			Data:    nil,
 		})
 	}
@@ -159,7 +159,7 @@ func UpdateAuthor(c *fiber.Ctx) error {
 	if getAuthor.Fullname == "" {
 		return c.JSON(config.AppResponse{
 			Code:    http.StatusOK,
-			Message: "NO-FOUND",
+			Message: "NOT-FOUND",
 			Data:    nil,
 		})
 	}
