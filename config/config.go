@@ -62,6 +62,6 @@ func Timer() fiber.Handler {
 
 //PrettyPrint is make easier to print data result to console after querying data to db
 func PrettyPrint(i interface{}) string {
-	s, _ := json.MarshalIndent(i, "", "\t")
-	return string(s)
+	results, _ := json.MarshalIndent(i, "", "\t")
+	return string(results)
 }
