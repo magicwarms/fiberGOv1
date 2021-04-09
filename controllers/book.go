@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
@@ -19,6 +20,7 @@ func GetAllBooks(c *fiber.Ctx) error {
 			Data:    nil,
 		})
 	}
+	fmt.Println(config.PrettyPrint(getAllBooks))
 	return c.JSON(config.AppResponse{
 		Code:    http.StatusOK,
 		Message: "OK",
