@@ -81,7 +81,7 @@ func DeleteBook(c *fiber.Ctx) error {
 			Data:    nil,
 		})
 	}
-	repositories.DeleteBook(book)
+	go repositories.DeleteBook(book)
 	return c.JSON(config.AppResponse{
 		Code:    http.StatusOK,
 		Message: "OK",
