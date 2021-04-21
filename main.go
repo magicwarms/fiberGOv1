@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"runtime"
 
 	"github.com/magicwarms/fiberGOv1/config"
 	"github.com/magicwarms/fiberGOv1/routes"
@@ -17,6 +18,8 @@ import (
 )
 
 func main() {
+	numOfCores := runtime.NumCPU()
+	runtime.GOMAXPROCS(numOfCores)
 	// Print current process
 	if fiber.IsChild() {
 		fmt.Printf("[%d] CHILD\n", os.Getppid())
