@@ -17,6 +17,8 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/recover"
 )
 
+// Running this app just type "fresh" on your CLI
+
 func main() {
 	numOfCores := runtime.NumCPU()
 	runtime.GOMAXPROCS(numOfCores)
