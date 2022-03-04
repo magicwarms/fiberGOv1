@@ -19,7 +19,7 @@ var (
 )
 
 // InitDatabase is initial Setup for DB Connection
-func InitDatabase() {
+func init() {
 	var err error
 	dsn := "host=" + GoDotEnvVariable("DB_HOST") + " user=" + GoDotEnvVariable("DB_USERNAME") + " password=" + GoDotEnvVariable("DB_PASSWORD") + " dbname=" + GoDotEnvVariable("DB_DATABASE") + " port=" + GoDotEnvVariable("DB_PORT") + " sslmode=disable TimeZone=" + GoDotEnvVariable("TZ")
 	appEnv := GoDotEnvVariable("APP_ENV")

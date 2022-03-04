@@ -74,8 +74,6 @@ func main() {
 	// for Fiber to let's caches be more efficient and save bandwidth,
 	// as a web server does not need to resend a full response if the content has not changed.
 	app.Use(etag.New())
-	//start DB connection
-	config.InitDatabase()
 	// Custom Timer middleware
 	app.Use(config.Timer())
 	app.Use(func(c *fiber.Ctx) error {
